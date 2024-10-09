@@ -2,29 +2,18 @@ import { Fragment, useEffect, useState, useRef } from 'react';
 import CardProduct from '../components/Fragments/CardProduct';
 import Button from '../components/Elements/Button';
 import { getProducts } from '../services/product.service';
-import { getUsername } from '../services/auth.service';
-
-
+import { useLogin } from './../hooks/useLogin.jsx';
 
 const ProductsPage = () => {
     const [cart, setCart] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [products, setProducts] = useState([]);
-    const [username, setUsername] = useState('');
+    const username = useLogin();
 
     useEffect(() => {
         setCart(JSON.parse(localStorage.getItem("cart")) || []);
     }, []);
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            setUsername(getUsername(token));
-        } else {
-            window.location.href = '/login';
-        }
-
-    }, []);
 
     useEffect(() => {
         getProducts((data) => {
@@ -74,7 +63,7 @@ const ProductsPage = () => {
                 <div className='flex flex-wrap w-4/6'>
                     {products.length > 0 && products.map((product) => (
                         <CardProduct key={product.id}>
-                            <CardProduct.Header image={product.image} />
+                            <CardProduct.Header image={product.image} id={product.id} />
                             <CardProduct.Body name={product.title}>
                                 {product.description}
                             </CardProduct.Body>
@@ -99,7 +88,7 @@ const ProductsPage = () => {
                                 return (
                                     <tr key={item.id}>
                                         <td>{product.title.substring(0, 10)} ...</td>
-                                        <td>{product.price.toLocaleString('id-ID', {
+                                        <td>{product.price.toLocaleString('en-US', {
                                             style: 'currency',
                                             currency: 'USD',
                                             minimumFractionDigits: 0,
@@ -107,7 +96,7 @@ const ProductsPage = () => {
                                         })}
                                         </td>
                                         <td>{item.qty}</td>
-                                        <td>{(product.price * item.qty).toLocaleString('id-ID', {
+                                        <td>{(product.price * item.qty).toLocaleString('en-US', {
                                             style: 'currency',
                                             currency: 'USD',
                                             minimumFractionDigits: 0,
@@ -121,7 +110,7 @@ const ProductsPage = () => {
                                 <td colSpan={3}><b>Total Price</b></td>
                                 <td>
                                     <b>
-                                        {totalPrice.toLocaleString('id-ID', {
+                                        {totalPrice.toLocaleString('en-US', {
                                             style: 'currency',
                                             currency: 'USD',
                                             minimumFractionDigits: 0,

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "../Elements/Button";
 
 const CardProduct = (PropTypes) => {
@@ -10,11 +11,11 @@ const CardProduct = (PropTypes) => {
 };
 
 const Header = (PropTypes) => {
-    const { image } = PropTypes;
+    const { image, id } = PropTypes;
     return (
-        <a href="#">
+        <Link to={`/product/${id}`} >
             <img src={image} alt="products" className="object-cover w-full p-8 rounded-t-lg h-60" />
-        </a>
+        </Link>
     )
 }
 
@@ -34,7 +35,7 @@ const Footer = (PropTypes) => {
     const { price, handleAddToCart, id } = PropTypes;
     return (
         <div className="flex items-center justify-between px-5 pb-5">
-            <span className="text-xl font-bold text-white">{price.toLocaleString('id-ID', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+            <span className="text-xl font-bold text-white">{price.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
             <Button classname="bg-blue-600" onClick={ () => handleAddToCart(id)}>Add to cart</Button>
         </div>
     )
